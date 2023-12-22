@@ -8,3 +8,5 @@ Features
 - Logging: Standardized logging format across all services.
   Contextual Information: Includes key information like timestamps, service names, correlation IDs, and log levels.
   Logs are designed to be aggregated in a centralized logging system for easier access and analysis.
+
+- GraphiQL GUI at /graphiql implemented for testing and development 

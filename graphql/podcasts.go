@@ -1,6 +1,9 @@
 package graphql
 
 import (
+	"errors"
+
+	"github.com/asaskevich/govalidator"
 	"github.com/graphql-go/graphql"
 	"github.com/thegreatdaniad/clam/services"
 )
@@ -77,6 +80,18 @@ func ResolvePodcasts(p graphql.ResolveParams) (interface{}, error) {
 	page, _ := p.Args["page"].(int)
 	limit, _ := p.Args["limit"].(int)
 
+	// implementing some basic input validations 
+	maxLength := "200"
+
+	if !govalidator.StringLength(search, "", maxLength) {
+		return nil, errors.New("search string exceeds maximum length of 200 characters")
+	}
+	if !govalidator.StringLength(title, "", maxLength) {
+		return nil, errors.New("title string exceeds maximum length of 200 characters")
+	}
+	if !govalidator.StringLength(categoryName, "", maxLength) {
+		return nil, errors.New("category name string exceeds maximum length of 200 characters")
+	}
 	qp := services.QueryPodcast{
 		Search:       search,
 		Title:        title,
