@@ -1,10 +1,13 @@
 package services
 
-import "log"
+// here I implement a very basic service registry system
 
 const (
 	REST_CONNECTION_MODE = iota
 	GRPC_CONNECTION_MODE
+)
+const (
+	PODCAST_SERVICE = "PODCAST_SERVICE"
 )
 
 // this is a struct representing the data of each microservice
@@ -18,29 +21,19 @@ type ServiceData struct {
 	Metadata       map[string]string
 }
 
-// this is an interface representing each of microservices
-// all of the microservices must implement this common functions
-// they generally provice general control and access to the microservices (like obtaining some metadata)
-type IService interface {
-	// check connection health to the microservice
-	CheckConnection() (bool, error)
-	GetServiceData() *ServiceData
+type Services struct {
+	PodcastService *PodcastService
 }
 
-type Services []IService
-
-func CheckServicesHealth(services Services) (bool, error) {
-	ok := true
-	for _, service := range services {
-		working, err := service.CheckConnection()
-		log.Println("Checking service health: ", service.GetServiceData().Name)
-
-		if err != nil {
-			return false, err
-		}
-		if !working {
-			ok = false
-		}
+func GetServices() *Services {
+	return &Services{
+		PodcastService: &PodcastService{
+			ServiceData: ServiceData{
+				Name:           "Podcast Service",
+				URL:            "https://601f1754b5a0e9001706a292.mockapi.io/podcasts",
+				ConnectionMode: REST_CONNECTION_MODE,
+				Version:        "1.0.0",
+			},
+		},
 	}
-	return ok, nil
 }

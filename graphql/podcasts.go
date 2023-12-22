@@ -1,14 +1,8 @@
 package graphql
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"net/url"
-	"strconv"
-
 	"github.com/graphql-go/graphql"
-	"github.com/sony/gobreaker"
+	"github.com/thegreatdaniad/clam/services"
 )
 
 var imagesType = graphql.NewObject(
@@ -75,33 +69,26 @@ var podcastType = graphql.NewObject(
 	},
 )
 
-func resolvePodcasts(p graphql.ResolveParams) (interface{}, error) {
-	// Extract query parameters
+func ResolvePodcasts(p graphql.ResolveParams) (interface{}, error) {
+	ctx := p.Context
 	search, _ := p.Args["search"].(string)
 	title, _ := p.Args["title"].(string)
 	categoryName, _ := p.Args["categoryName"].(string)
 	page, _ := p.Args["page"].(int)
 	limit, _ := p.Args["limit"].(int)
 
-	// Construct the query parameters
-	queryParams := url.Values{}
-	if search != "" {
-		queryParams.Add("search", search)
+	qp := services.QueryPodcast{
+		Search:       search,
+		Title:        title,
+		CategoryName: categoryName,
+		Page:         page,
+		Limit:        limit,
 	}
-	if title != "" {
-		queryParams.Add("title", title)
+	s := services.GetServices()
+	podcasts, err := s.PodcastService.GetPodcasts(ctx, qp)
+	if err != nil {
+		return nil, err
 	}
-	if categoryName != "" {
-		queryParams.Add("categoryName", categoryName)
-	}
-	if page != 0 {
-		queryParams.Add("page", strconv.Itoa(page))
-	}
-	if limit != 0 {
-		queryParams.Add("limit", strconv.Itoa(limit))
-	}
-
-
 
 	return podcasts, nil
 }

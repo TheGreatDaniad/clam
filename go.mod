@@ -1,4 +1,4 @@
-module clam
+module github.com/thegreatdaniad/clam
 
 go 1.20
 
@@ -9,7 +9,7 @@ require (
 )
 
 require (
-	github.com/TheGreatDaniad/clam v0.0.0-20231222120751-15f26f5d7cf5 // indirect
+	github.com/friendsofgo/graphiql v0.2.2 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
