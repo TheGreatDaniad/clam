@@ -1,0 +1,7 @@
+port: 3001
+name: "ClaimClamAPIGateway"
+version: "0.1.0"
+logFilePath: "./logs.log"
+
+
+
