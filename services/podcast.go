@@ -42,7 +42,6 @@ type PodcastService struct {
 	ServiceData
 }
 
-
 func (p *PodcastService) CheckConnection() (bool, error) {
 	return true, nil
 }
